@@ -12,10 +12,15 @@ public class ConexaoApi {
     public RestClient restClient;   
 
    public String buscarCotacaoAtual( String moeda) throws IOException{
-        String caminho = "https://economia.awesomeapi.com.br/json/last/"+moeda+"-BRL";
-        
-        String conteudo = restClient.get().uri(caminho).retrieve().body(String.class);
-        return conteudo;
+        try {
+        String caminho = "https://economia.awesomeapi.com.br/json/last/" + moeda + "-BRL";
+        return restClient.get()
+                         .uri(caminho)
+                         .retrieve()
+                         .body(String.class);
+    } catch (Exception e) {
+        return "{\"error\": \"Serviço de cotação temporariamente indisponível. Tente novamente em instantes.\"}";
+    }
    }
    public String buscarHistoricoCotacao(String moeda) throws IOException{
       String caminhoHistorico = "https://economia.awesomeapi.com.br/json/daily/"+moeda+"-BRL/7";
